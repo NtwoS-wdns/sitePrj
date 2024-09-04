@@ -1,0 +1,73 @@
+html, body{
+    width: 100%;
+    height: 100%; 
+}
+.container {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+   justify-content: center;
+   background-color: white;
+   outline: solid;
+   font-size: 20px;
+}
+.vertcontainer{
+    width: 10%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+   justify-content: center;
+   background-color: orange;
+}
+.info{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+.vertbox{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction:column;
+    
+    
+}
+.frame{
+    width: 95%;
+    height: 95%;
+    display: flex;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+   
+}
+#personalinfo{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+   justify-content: center;
+   background-color: gray;
+   
+}
+#schoolinfo{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+   justify-content: center;
+   background-color: gray;
+   
+}
+#skillinfo{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+   justify-content: center;
+   background-color: gray;
+   
+}
