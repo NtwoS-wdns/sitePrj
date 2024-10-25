@@ -1,28 +1,462 @@
 <!DOCTYPE html>
-<html>
-	<head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="style.css">
-    </head>
-	
-	<body>
-	    
-        <div class = "container">HS Resume</div>
-        <div class = "info">
-            <div class = "vertcontainer"></div>
-            <div class= "vertbox">
-                <button id = "personalinfo">
-                    <div class = "frame"> Personal Information</div>
-                </button>
-                <button id = "schoolinfo">
-                    <div class = "frame"> School </div>
-                </button>
-                <button id = "skillinfo">
-                    <div class = "frame"> Skills </div>
-                </button>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой интернет-магазин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #666670; 
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .menu-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .side-menu {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            z-index: 1000;
+        }
+
+        .side-menu a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 22px;
+            color: #fff;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .side-menu a:hover {
+            background-color: #e3dc1b; 
+        }
+
+        .side-menu .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 36px;
+            color: #fff;
+        }
+
+        .cart {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .products, .about, .contacts {
+            display: none;
+            margin: 20px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .product {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            width: 30%;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .product h2 {
+            margin-top: 0;
+            color: #2e004f; 
+        }
+
+        .price {
+            font-weight: bold;
+            color: #333; 
+        }
+
+        button.add-to-cart {
+            background-color: #e3dc1b;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button.add-to-cart:hover {
+            background-color: #22003b; 
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333; 
+            color: #fff; 
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 15px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .aboutUs{
+           font-size: 22px; 
+        }
+        
+        .popup2 {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .popup-content2 {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 15px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .close2 {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close2:hover,
+        .close2:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes slideUp2 {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .product-list {
+            margin: 20px 0;
+        }
+
+        .product-item {
+            margin-bottom: 10px;
+        }
+
+        .total-price {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        
+        
+    </style>
+</head>
+<body>
+    <header>
+        <span class="menu-btn">&#9776;</span>
+        <h1>SkillForge</h1>
+        <button class="cart" id = "openPopupBtn">
+            <span id="cart-count">0</span> Товари в кошику
+        </button>
+    </header>
+
+    
+    <div id="popup2" class="popup2">
+        <div class="popup-content2">
+            <span class="close2">&times;</span>
+            <h2>Оформлення покупки</h2>
+            <div class="product-list" id="productList">
+                
             </div>
-            
+            <div class="total-price" id="totalPrice">
+               Ітогова ціна: UAH 0.00
+            </div>
+            <form>
+                <label for="name">Ім'я:</label>
+                <input type="text" id="name" name="name" required><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="address">Адреса:</label>
+                <input type="text" id="address" name="address" required><br><br>
+                <label for="payment">Спосіб оплати:</label>
+                <select id="payment" name="payment" required>
+                    <option value="creditCard">Кредитна картка</option>
+                    <option value="paypal">PayPal</option>
+                </select><br><br>
+                <button type="submit">Підтвердити</button>
+            </form>
         </div>
-        <script src = "resume-animations.js"></script>
-	</body>
+    </div>
+    
+    
+    
+    
+    <div id="side-menu" class="side-menu">
+        <a href="javascript:void(0)" class="close-btn">&times;</a>
+        <a href="#" class="tab-link" data-tab="products">Товари</a>
+        <a href="#" class="tab-link" data-tab="about">Про нас</a>
+        <a href="#" class="tab-link" data-tab="contacts">Контакти</a>
+    </div>
+
+    
+    <section id="products" class="products active">
+        <div class="product">
+            <h2>Java</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Java_programming_language_logo.svg/800px-Java_programming_language_logo.svg.png"  width="100" height="150">
+            <span class="price"><br>500 UAH</span>
+            <button class="add-to-cart" data-price="1000", num="1">Додати в кошик</button>
+        </div>
+        
+        <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <p id="textaboutgoods">!</p>
+        </div>
+        </div>
+        
+        <div class="product">
+            <h2>Python</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1200px-Python-logo-notext.svg.png"  width="100" height="100">
+            <span class="price"><br>450 UAH</span>
+            <button class="add-to-cart" data-price="1500", num="2">Додати в кошик</button>
+        </div>
+        <div class="product">
+            <h2>C++</h2>
+            <img src="https://www.vikingsoftware.com/wp-content/uploads/2024/02/C-2.png"  width="100" height="100">
+            <span class="price"><br>650 UAH</span>
+            <button class="add-to-cart" data-price="2000", num="3">Додати в кошик</button>
+        </div>
+    </section>
+
+   
+    <section id="about" class="about">
+        <h2>Про нас</h2>
+        <p class = "aboutUs">Наша компанія — провідний постачальник онлайн-курсів у сфері інформаційних технологій, спеціалізуючись на програмуванні та цифрових навичках. Ми прагнемо надати кожному можливість освоїти сучасні технології та стати експертом у своїй галузі.
+
+Наша місія
+Наша місія полягає в тому, щоб зробити освіту доступною та якісною. Ми віримо, що кожен має право на знання, тому пропонуємо гнучкі формати навчання, що дозволяють вам вчитися в зручний для вас час.
+
+Що ми пропонуємо
+У нашому портфоліо ви знайдете курси з таких популярних мов програмування, як Java, Python та C++. Кожен курс розроблений експертами галузі та включає:
+
+Відеоуроки: Інтерактивні та зрозумілі, щоб ви могли легко засвоїти матеріал.
+Практичні завдання: Виконуючи реальні проекти, ви здобудете практичний досвід.
+Підтримка викладачів: Наші фахівці завжди готові допомогти вам у навчанні та відповісти на ваші запитання.
+Спільнота учнів: Спілкуйтеся з іншими студентами, діліться досвідом та отримуйте підтримку.
+Чому обрати нас
+Актуальність курсів: Ми постійно оновлюємо наші програми, щоб відповідати останнім тенденціям в IT-індустрії.
+Гнучкість: Ви можете навчатися в будь-який час та з будь-якого місця — наші курси доступні на всіх пристроях.
+Сертифікація: Після успішного завершення курсу ви отримаєте сертифікат, який підтвердить ваші знання та навички.
+Приєднуйтеся до нашої спільноти та розпочніть свою подорож у світ технологій! Ми допоможемо вам досягти нових вершин у кар'єрі та відкрити нові можливості.</p>
+    </section>
+
+   
+    <section id="contacts" class="contacts">
+        <h2>Контакти</h2>
+        <p>Телефонний номер: +380956781397</p>
+        <p>Email: helpme@skillforge.com</p>
+    </section>
+
+    <footer>
+        <p>© 2024 SkillForge by Nikita A. Samchyk</p>
+    </footer>
+
+    <script>
+    
+    
+        const products = [
+            //{ name: 'Товар 1', price: 10.00 },
+            
+        ];
+        
+        
+        let descriptions = ["Опануйте основи програмування на Java, вивчаючи об'єктно-орієнтоване програмування, розробку додатків та роботу з базами даних.", "Дізнайтеся, як створювати програми на Python, вивчаючи основи синтаксису, аналіз даних і розробку веб-додатків.", "Пориньте у світ C++, вивчаючи низькорівневе програмування, алгоритми та структури даних для створення високопродуктивних додатків."];
+        let courses = ["Java", "Python", "C++", "500", "450", "650"]
+        let cartCount = 0;
+        let totalPrice = 0;
+
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const price = parseInt(event.target.getAttribute('data-price'), 10);
+                cartCount++;
+                totalPrice += price;
+                document.getElementById('cart-count').textContent = cartCount;
+
+                const index = parseInt(event.target.getAttribute('num'))-1; 
+                
+                document.getElementById('popup').style.display = 'block';
+                document.getElementById('textaboutgoods').innerHTML = "Чудовий вибір!<br><br>"+descriptions[index]; 
+                products.push({name: courses[index], price: parseInt(courses[index+3])}); 
+            });
+        });
+
+       
+        document.querySelector('.menu-btn').addEventListener('click', function() {
+            document.getElementById('side-menu').style.width = '250px';
+            
+        });
+
+
+        document.querySelector('.close-btn').addEventListener('click', function() {
+            document.getElementById('side-menu').style.width = '0';
+        });
+
+     
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                
+              
+                document.getElementById('side-menu').style.width = '0';
+
+              
+                document.querySelectorAll('section').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+           
+                const tabId = this.getAttribute('data-tab');
+
+               
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        document.getElementsByClassName('close')[0].addEventListener('click', function() {
+            document.getElementById('popup').style.display = 'none';
+        });
+        
+        
+        
+        
+        
+        
+
+        const openPopupBtn = document.getElementById('openPopupBtn');
+        const popup = document.getElementById('popup2');
+        const closeBtn = document.getElementsByClassName('close2')[0];
+        const productList = document.getElementById('productList');
+        const totalPriceElem = document.getElementById('totalPrice');
+
+        openPopupBtn.addEventListener('click', function() {
+            popup.style.display = 'block';
+            renderProductList();
+        });
+
+        closeBtn.addEventListener('click', function() {
+            popup.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === popup) {
+                popup.style.display = 'none';
+            }
+        });
+
+        function renderProductList() {
+            productList.innerHTML = '';
+            let totalPrice = 0;
+
+            products.forEach(product => {
+                const productItem = document.createElement('div');
+                productItem.className = 'product-item';
+                productItem.textContent = `${product.name} - UAH ${product.price.toFixed(2)}`;
+                productList.appendChild(productItem);
+                totalPrice += product.price;
+            });
+
+            totalPriceElem.textContent = `Ітогова ціна: UAH ${totalPrice.toFixed(2)}`;
+        }
+             
+        
+    </script>
+</body>
 </html>
