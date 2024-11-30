@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой интернет-магазин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #666670; 
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .menu-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .side-menu {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            z-index: 1000;
+        }
+
+        .side-menu a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 22px;
+            color: #fff;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .side-menu a:hover {
+            background-color: #e3dc1b; 
+        }
+
+        .side-menu .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 36px;
+            color: #fff;
+        }
+
+        .cart {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .products, .about, .contacts, .blog, .faq, .support, .rewiev, .collab {
+            display: none;
+            margin: 20px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .product {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            width: 23%; /* Adjusted to allow 4 in a row */
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            margin: 1%;
+            float: left; /* Added float to align products */
+            box-sizing: border-box; /* Ensure padding and border are included in width */
+        }
+
+        .product h2 {
+            margin-top: 0;
+            color: #2e004f; 
+        }
+
+        .price {
+            font-weight: bold;
+            color: #333; 
+        }
+
+        button.add-to-cart {
+            background-color: #e3dc1b;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button.add-to-cart:hover {
+            background-color: #22003b; 
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333; 
+            color: #fff; 
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 15px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .aboutUs {
+            font-size: 22px; 
+        }
+        
+        .popup2 {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .popup-content2 {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 15px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .close2 {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close2:hover,
+        .close2:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @keyframes slideUp2 {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .product-list {
+            margin: 20px 0;
+        }
+
+        .product-item {
+            margin-bottom: 10px;
+        }
+
+        .total-price {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        footer {
+            clear: both;
+            position: relative;
+            height: 50;
+            margin-top: -2000px;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <span class="menu-btn">&#9776;</span>
+        <h1>SkillForge</h1>
+        <button class="cart" id="openPopupBtn">
+            <span id="cart-count">0</span> 🧺
+        </button>
+    </header>
+
+    <div id="popup2" class="popup2">
+        <div class="popup-content2">
+            <span class="close2">&times;</span>
+            <h2>Оформлення покупки</h2>
+            <div class="product-list" id="productList">
+                
+            </div>
+            <div class="total-price" id="totalPrice">
+               Ітогова ціна: UAH 0.00
+            </div>
+            <form>
+                <label for="name">Ім'я:</label>
+                <input type="text" id="name" name="name" required><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="address">Адреса:</label>
+                <input type="text" id="address" name="address" required><br><br>
+                <label for="payment">Спосіб оплати:</label>
+                <select id="payment" name="payment" required>
+                    <option value="creditCard">Кредитна картка</option>
+                    <option value="paypal">PayPal</option>
+                </select><br><br>
+                <button type="submit">Підтвердити</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="side-menu" class="side-menu">
+        <a href="javascript:void(0)" class="close-btn">&times;</a>
+        <a href="#" class="tab-link" data-tab="products">Товари</a>
+        <a href="#" class="tab-link" data-tab="about">Про нас</a>
+        <a href="#" class="tab-link" data-tab="contacts">Контакти</a>
+        <a href="#" class="tab-link" data-tab="blog">Блог</a>
+        <a href="#" class="tab-link" data-tab="rewiev">Відгуки</a>
+        <a href="#" class="tab-link" data-tab="collab">Співпраця</a>
+    </div>
+
+    <section id="products" class="products active">
+        <div class="product">
+            <h2>Java</h2>
+            <img src="https://cdn.iconscout.com/icon/free/png-256/free-java-logo-icon-download-in-svg-png-gif-file-formats--wordmark-programming-language-pack-logos-icons-1174953.png?f=webp&w=256" width="100" height="100">
+            <span class="price"><br>500 UAH</span>
+            <button class="add-to-cart" data-price="1000" num="1">Додати в кошик</button>
+        </div>
+        
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <p id="textaboutgoods">!</p>
+            </div>
+        </div>
+        
+        <div class="product">
+            <h2>Python</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1200px-Python-logo-notext.svg.png" width="100" height="100">
+            <span class="price"><br>800 UAH</span>
+            <button class="add-to-cart" data-price="800" num="2">Додати в кошик</button>
+        </div>
+
+        <div class="product">
+            <h2>C++</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/ISO_C%2B%2B_Logo.svg/1200px-ISO_C%2B%2B_Logo.svg.png" width="100" height="100">
+            <span class="price"><br>700 UAH</span>
+            <button class="add-to-cart" data-price="700" num="3">Додати в кошик</button>
+        </div>
+
+        <div class="product">
+            <h2>Piet</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Piet_Program.gif" width="100" height="100">
+            <span class="price"><br>600 UAH</span>
+            <button class="add-to-cart" data-price="600" num="4">Додати в кошик</button>
+        </div>
+
+        <div class="product">
+            <h2>C#</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png" width="100" height="100">
+            <span class="price"><br>650 UAH</span>
+            <button class="add-to-cart" data-price="650" num="5">Додати в кошик</button>
+        </div>
+        <div class="product">
+            <h2>JavaScript</h2>
+            <img src="https://static.vecteezy.com/system/resources/previews/027/127/463/non_2x/javascript-logo-javascript-icon-transparent-free-png.png" width="100" height="100">
+            <span class="price"><br>350 UAH</span>
+            <button class="add-to-cart" data-price="350" num="6">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>Ruby</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Ruby_logo.png" width="100" height="100">
+            <span class="price"><br>450 UAH</span>
+            <button class="add-to-cart" data-price="450" num="7">0Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>PHP</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/800px-PHP-logo.svg.png" width="100" height="100">
+            <span class="price"><br>280 UAH</span>
+            <button class="add-to-cart" data-price="280" num="8">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>Swift</h2>
+            <img src="https://cdn4.iconfinder.com/data/icons/logos-3/504/Swift-2-512.png" width="100" height="100">
+            <span class="price"><br>600 UAH</span>
+            <button class="add-to-cart" data-price="600" num="9">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>Go</h2>
+            <img src="https://go.dev/blog/go-brand/Go-Logo/PNG/Go-Logo_Blue.png" width="100" height="100">
+            <span class="price"><br>420 UAH</span>
+            <button class="add-to-cart" data-price="420" num="10">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>Rust</h2>
+            <img src="https://rust-lang.org/logos/rust-logo-512x512.png" width="100" height="100">
+            <span class="price"><br>550 UAH</span>
+            <button class="add-to-cart" data-price="550" num="11">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>Kotlin</h2>
+            <img src="https://download.logo.wine/logo/Kotlin_(programming_language)/Kotlin_(programming_language)-Logo.wine.png" width="100" height="100">
+            <span class="price"><br>580 UAH</span>
+            <button class="add-to-cart" data-price="580" num="12">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>TypeScript</h2>
+            <img src="https://www.svgrepo.com/show/374144/typescript.svg" width="100" height="100">
+            <span class="price"><br>390 UAH</span>
+            <button class="add-to-cart" data-price="390" num="13">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>Scala</h2>
+            <img src="https://cdn-icons-png.flaticon.com/512/6132/6132220.png" width="100" height="100">
+            <span class="price"><br>670 UAH</span>
+            <button class="add-to-cart" data-price="670" num="14">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>Perl</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Perl_language_logo.svg" width="100" height="100">
+            <span class="price"><br>320 UAH</span>
+            <button class="add-to-cart" data-price="320" num="15">Додати до кошика</button>
+        </div>
+        <div class="product">
+            <h2>Elixir</h2>
+            <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/elixir_lang_logo_icon_169207.png" width="100" height="100">
+            <span class="price"><br>710 UAH</span>
+            <button class="add-to-cart" data-price="710" num="16">Додати до кошика</button>
+        </div>
+        
+    </section>
+
+    <section id="about" class="about">
+        <h2>Про нас</h2>
+        <p class="aboutUs">SkillForge — це ваш надійний партнер у світі програмування. Ми пропонуємо курси з Java, Python, C++, JavaScript та C#, щоб допомогти вам стати професіоналом у цій галузі.</p>
+    </section>
+
+    <section id="contacts" class="contacts">
+        <h2>Контакти</h2>
+        <p class="aboutUs">Email: info@skillforge.com</p>
+        <p class="aboutUs">Телефон: +380 123 456 789</p>
+    </section>
+
+    <section id="blog" class="blog">
+        <h2>Блог</h2>
+        <p class="aboutUs">Тренди в IT: Що буде актуально у 2025 році<br>
+У світі інформаційних технологій зміни відбуваються стрімко. Щоб залишатися конкурентоспроможними на ринку праці, важливо знати про нові тренди та технології. У 2025 році очікується кілька ключових напрямків, які вплинуть на розвиток індустрії. Давайте розглянемо їх детальніше.<br>
+
+1. Штучний інтелект та машинне навчання
+Штучний інтелект (ШІ) продовжує активно впроваджуватися в різні сфери, від фінансів до медицини. У 2025 році очікується збільшення інвестицій у розробку нових алгоритмів машинного навчання, що дозволить створювати ще більш адаптивні системи. Компанії зможуть автоматизувати рутинні процеси, знижуючи витрати та підвищуючи ефективність.<br>
+
+2. Кібербезпека
+Зі збільшенням цифрових загроз зростає і важливість кібербезпеки. У 2025 році компанії будуть активно інвестувати в нові технології захисту даних, включаючи блокчейн та системи управління доступом. Експерти в цій галузі будуть особливо затребувані, оскільки захист інформації стане пріоритетом для бізнесу.<br>
+
+3. Веб 3.0 та децентралізовані технології
+Веб 3.0 обіцяє змінити спосіб взаємодії користувачів з Інтернетом. Децентралізовані додатки (dApps) на базі блокчейну наберуть популярності, оскільки вони пропонують більшу безпеку та контроль над даними. Веб-розробники повинні бути готові до роботи з новими технологіями та інструментами, які з'являться в цій сфері.<br>
+
+4. Розширена та віртуальна реальність
+Технології віртуальної (VR) та розширеної (AR) реальності продовжують завойовувати популярність, зокрема в іграх, освіті та охороні здоров'я. У 2025 році очікується значний прогрес у розвитку цих технологій, що дозволить створювати ще більш реалістичні та інтерактивні середовища для користувачів.<br>
+
+5. Зелені технології та сталий розвиток
+У відповідь на зростаючі екологічні виклики все більше компаній переходять на екологічні практики. У 2025 році важливими стануть розробка зелених технологій, оптимізація енергоспоживання та використання відновлюваних джерел енергії. IT-спеціалісти, які володіють знаннями у цій галузі, матимуть перевагу на ринку праці.</p>
+    </section>
+<section id="rewiev" class="rewiev">
+        <h2>Відгуки</h2>
+       
+        <p class="aboutUs">Відгуки про IT курси
+<br>1. Олександр К.
+"Я пройшов курс з Python і дуже задоволений результатом. Викладачі були професіоналами своєї справи, а матеріал подавався доступно і зрозуміло. Тепер я впевнено пишу код і можу реалізувати свої проекти!"
+
+<br>2. Анна І.
+"Курс з Java був для мене справжнім відкриттям. Я отримала не тільки теоретичні знання, а й практичні навички. Зараз я працюю над реальними проектами, і це все завдяки SkillForge!"
+
+<br>3. Дмитро Л.
+"Я пройшов курс з веб-розробки і вражений обсягом інформації, яку я отримав. Заняття були інтерактивними, а підтримка викладачів на всіх етапах навчання була на високому рівні."
+
+<br>4. Ірина К.
+"Мені дуже сподобався курс з C++. Викладач завжди був на зв'язку і готовий допомогти. Я відчула, що навчаюся в дружній атмосфері, що дуже сприяло моєму прогресу."
+
+<br>5. Максим П.
+"Курс з JavaScript став для мене величезним кроком вперед. Я отримав знання, які допомогли мені знайти роботу в IT. Рекомендую SkillForge всім, хто хоче розвиватися в цій галузі!"
+
+<br>6. Світлана Р.
+"Я пройшла кілька курсів на SkillForge і можу з упевненістю сказати, що це найкраще місце для навчання програмуванню. Я отримала всі необхідні знання та навички для роботи в IT."
+
+<br>7. Олег В.
+"Завдяки курсу з Java я зміг змінити свою кар'єру і стати програмістом. Викладачі дуже підтримували нас і давали корисні поради. Я вважаю, що це був один з найкращих виборів у моєму житті!"
+
+<br>8. Катерина Т.
+"Проходила курс з Python для початківців. Матеріал подавався легко і зрозуміло, а домашні завдання допомогли закріпити знання. Дуже вдячна SkillForge за цю можливість!"</p>
+    </section>
+    
+    <section id="collab" class="collab">
+        <h2 class = "aboutUs">Співпраця з IT-компаніями</h2>
+<p class="aboutUs">
+<br>SkillForge має міцні партнерські відносини з провідними IT-компаніями та стартапами, які шукають перспективних випускників. Учасники нашої платформи отримують доступ до ексклюзивних вакансій від компаній-партнерів та інформацію про програми стажувань.
+
+<br><br>Програма стажувань від партнерів
+
+<br>Партнерські компанії пропонують стажування, що дають змогу випускникам SkillForge набувати реальний досвід роботи в сфері технологій. Пріоритетний доступ до цих програм мають найкращі студенти, які продемонстрували високі результати під час навчання.</p>
+    </section>
+    
+    
+    <footer>
+        <p>&copy; 2024 SkillForge. Всі права захищені.</p>
+    </footer>
+
+    <script>
+        const sideMenu = document.getElementById('side-menu');
+        const menuBtn = document.querySelector('.menu-btn');
+        const closeBtn = document.querySelector('.close-btn');
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const productsSection = document.getElementById('products');
+        const aboutSection = document.getElementById('about');
+        const contactsSection = document.getElementById('contacts');
+        const blogSection = document.getElementById('blog');
+        const rewSection = document.getElementById('rewiev'); 
+        const collabSection = document.getElementById('collab'); 
+
+        let cart = [];
+        
+        menuBtn.onclick = function() {
+            sideMenu.style.width = '250px';
+        }
+
+        closeBtn.onclick = function() {
+            sideMenu.style.width = '0';
+        }
+
+        tabLinks.forEach(link => {
+            link.onclick = function() {
+                const tab = this.dataset.tab;
+                productsSection.classList.remove('active');
+                aboutSection.classList.remove('active');
+                contactsSection.classList.remove('active');
+                blogSection.classList.remove('active');
+                rewSection.classList.remove('active'); 
+                collabSection.classList.remove('active'); 
+                
+
+                if (tab === 'products') productsSection.classList.add('active');
+                if (tab === 'about') aboutSection.classList.add('active');
+                if (tab === 'contacts') contactsSection.classList.add('active');
+                if (tab === 'blog') blogSection.classList.add('active');
+                if (tab === 'rewiev') rewSection.classList.add('active');
+                if (tab === 'collab') collabSection.classList.add('active');
+
+                sideMenu.style.width = '0'; // Close side menu on tab click
+            }
+        });
+
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.getElementById('cart-count');
+        const openPopupBtn = document.getElementById('openPopupBtn');
+        const popup = document.getElementById('popup');
+        const closePopup = document.querySelector('.close');
+        const textAboutGoods = document.getElementById('textaboutgoods');
+        const totalPriceElement = document.getElementById('totalPrice');
+        const productListElement = document.getElementById('productList');
+
+        addToCartButtons.forEach(button => {
+            button.onclick = function() {
+                const price = this.dataset.price;
+                const productName = this.previousElementSibling.previousElementSibling.innerText;
+                cart.push({ name: productName, price: price });
+                cartCount.innerText = cart.length;
+
+                // Show popup
+                textAboutGoods.innerText = `${productName} за ${price} UAH додано до кошику!`;
+                popup.style.display = "block";
+
+                // Calculate total price
+                const totalPrice = cart.reduce((total, item) => total + parseInt(item.price), 0);
+                totalPriceElement.innerText = `Ітогова ціна: UAH ${totalPrice.toFixed(2)}`;
+                productListElement.innerHTML = cart.map(item => `<div class="product-item">${item.name}: ${item.price} UAH</div>`).join('');
+            }
+        });
+
+        closePopup.onclick = function() {
+            popup.style.display = "none";
+        }
+
+        openPopupBtn.onclick = function() {
+            document.getElementById('popup2').style.display = "block";
+        }
+
+        document.querySelector('.close2').onclick = function() {
+            document.getElementById('popup2').style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target === popup) {
+                popup.style.display = "none";
+            }
+            if (event.target === document.getElementById('popup2')) {
+                document.getElementById('popup2').style.display = "none";
+            }
+        }
+
+        document.querySelector('form').onsubmit = function(event) {
+            event.preventDefault(); 
+            alert('Покупка успішно оформлена!');
+            cart = [];
+            cartCount.innerText = cart.length;
+            totalPriceElement.innerText = `Ітогова ціна: UAH 0.00`;
+            productListElement.innerHTML = '';
+            document.getElementById('popup2').style.display = "none"; 
+        }
+    </script>
+</body>
+</html>
