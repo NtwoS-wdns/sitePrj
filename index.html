@@ -1,1 +1,109 @@
-Cumming son
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeterForge Game Studio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+        }
+        header {
+            background-color: #ff4500;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        nav {
+            margin: 20px 0;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            font-size: 2em;
+        }
+        .content p {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        .games {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .game {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            width: 250px;
+        }
+        .game img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        footer {
+            background-color: #ff4500;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AeterForge Game Studio</h1>
+    </header>
+    <nav>
+        <a href="#about">О нас</a>
+        <a href="#games">Игры</a>
+        <a href="#contact">Контакты</a>
+    </nav>
+    <div class="content" id="about">
+        <h2>О нас</h2>
+        <p>Мы AeterForge, независимая гейм-студия, создающая захватывающие миры и уникальные игровые впечатления.</p>
+    </div>
+    <div class="content" id="games">
+        <h2>Наши игры</h2>
+        <div class="games">
+            <div class="game">
+                <img src="game1.jpg" alt="Игра 1">
+                <h3>Игра 1</h3>
+                <p>Краткое описание игры.</p>
+            </div>
+            <div class="game">
+                <img src="game2.jpg" alt="Игра 2">
+                <h3>Игра 2</h3>
+                <p>Краткое описание игры.</p>
+            </div>
+        </div>
+    </div>
+    <div class="content" id="contact">
+        <h2>Контакты</h2>
+        <p>Email: <a href="mailto:contact@aeterforge.com">contact@aeterforge.com</a></p>
+        <p>Телефон: +7 (123) 456-78-90</p>
+    </div>
+    <footer>
+        <p>&copy; 2024 AeterForge Game Studio. Все права защищены.</p>
+    </footer>
+</body>
+</html>
+
