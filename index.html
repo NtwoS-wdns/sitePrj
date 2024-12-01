@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+	</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AeterForge Game Studio</title>
@@ -22,6 +24,12 @@
             background: url('https://i.imgur.com/HyVi73q.gif') center/cover no-repeat;
             z-index: -1;
             opacity: 0.8;
+        }
+        .small{
+            width: 6px;
+            height: 6px;
+            border: 2px solid #fff;
+            border-radius: 50%;
         }
         header {
             background-color: rgba(255, 69, 0, 0.8);
@@ -111,5 +119,21 @@
     <footer>
         <p>&copy; 2024 AeterForge Game Studio. Все права защищены.</p>
     </footer>
+    <script>
+        const cursorSmall = document.querySelector('.small');
+       
+
+        const positionElement = (e)=> {
+            const mouseY = e.clientY;
+            const mouseX = e.clientX;
+   
+            cursorSmall.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+  
+            //cursorBig.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+ 
+        }
+
+        window.addEventListener('mousemove', positionElement)
+    </script>
 </body>
 </html>
