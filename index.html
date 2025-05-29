@@ -31,7 +31,10 @@
 
     .menu-toggle {
       display: none;
-      margin-left: auto;
+     
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
     }
 
     nav ul {
@@ -45,7 +48,7 @@
 
     .hero {
       height: 100vh;
-      background: url('https://endnightgames.com/images/banner.jpg') no-repeat center center/cover;
+      background: url('hero.jpg') no-repeat center center/cover;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -74,19 +77,23 @@
 
     @media (max-width:768px) {
       .menu-toggle {
-        display:block;
-        margin-left:0;
+        display: block;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        justify-content: flex-end;
       }
       nav ul {
-        flex-direction:column;
+        flex-direction: column;
         background-color: rgba(0,0,0,0.95);
-        position:absolute;
-        top:100%; right:0;
-        width:200px;
-        display:none;
+        position: absolute;
+        top: 100%; right: 0;
+        width: 100%;
+        display: none;
       }
-      nav ul.show { display:flex; }
-      nav ul li { padding:1rem; }
+      nav ul.show { display: flex; }
+      nav ul li { padding: 1rem; }
       nav { position: relative; }
     }
   </style>
@@ -134,15 +141,21 @@
   </footer>
 
   <script>
-    function toggleMenu() { document.querySelector('nav ul').classList.toggle('show'); }
-    const header = document.querySelector('header'); let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', ()=>{
-      if(window.scrollY>100) header.classList.add('scrolled'); else header.classList.remove('scrolled');
-      if(window.scrollY>lastScrollY && window.scrollY>100){ header.classList.remove('show'); header.classList.add('hide'); }
-      else{ header.classList.remove('hide'); header.classList.add('show'); }
-      lastScrollY = window.scrollY;
+    document.addEventListener('DOMContentLoaded', function() {
+      function toggleMenu() { document.querySelector('nav ul').classList.toggle('show'); }
+      window.toggleMenu = toggleMenu;
+      const header = document.querySelector('header');
+      let lastScrollY = window.scrollY;
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) header.classList.add('scrolled'); else header.classList.remove('scrolled');
+        if (window.scrollY > lastScrollY && window.scrollY > 100) { header.classList.remove('show'); header.classList.add('hide'); }
+        else { header.classList.remove('hide'); header.classList.add('show'); }
+        lastScrollY = window.scrollY;
+      });
+
+      header.classList.add('show');
     });
-    header.classList.add('show');
   </script>
 </body>
 </html>
