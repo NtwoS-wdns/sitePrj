@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Домашняя страница{% endblock %}
+
+{% block content %}
+
+<!-- Хеддер -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">🐾 PET'O'TET</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="topNav" class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/login/">Вход</a></li>
+        <li class="nav-item"><a class="nav-link" href="/map/">Локатор</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Блок: Карусель питомцев -->
+<section class="py-5 text-center">
+  <div class="container">
+    <h2 class="text-white mb-4">Наши питомцы</h2>
+
+    <div id="petCardCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500">
+      <div class="carousel-inner">
+
+        {% for pet in slides %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="d-flex justify-content-center">
+            <div class="pet-card">
+              <img src="{{ pet.image }}" alt="{{ pet.name }}">
+              <div class="pet-card-body">
+                <h5>{{ pet.name }} ({{ pet.sex }})</h5>
+                <p>{{ pet.desc }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <!-- Стрелки -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#petCardCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#petCardCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Блок: О сообществе -->
+<section class="py-5 reveal" style="background:#1a1a1a;">
+  <div class="container text-center">
+    <h2 class="mb-4 text-warning">О нас</h2>
+    <p class="lead">Мы - компания с нулевым опытом в этой теме, на животных нам так же наплевать.</p>
+  </div>
+</section>
+
+<section class="py-5 reveal" style="background:#111;">
+  <div class="container text-center">
+    <h2 class="mb-4 text-warning">Сообщество</h2>
+    <p class="lead">Общайся с четкими владельцами, заводи друзей и делись тупыми историями о своих питомцах.</p>
+  </div>
+</section>
+
+<!-- Блок: Забота -->
+<section class="py-5 reveal" style="background:#1a1a1a;">
+  <div class="container text-center">
+    <h2 class="mb-4 text-warning">Забота</h2>
+    <p class="lead">Следи за здоровьем питомцев, получай напоминания о том насколько ему плохо с таким хозяином.</p>
+  </div>
+</section>
+
+<!-- Блок: Маркетплейс -->
+<section class="py-5 reveal" style="background:#111;">
+  <div class="container text-center">
+    <h2 class="mb-4 text-warning">Маркетплейс</h2>
+    <p class="lead">Находи товары и услуги рядом с нашей символикой с огромной наценкой.</p>
+  </div>
+</section>
+
+<section class="py-5 reveal" style="background:#1a1a1a;">
+  <div class="container text-center">
+    <h2 class="mb-4 text-warning">Приложение</h2>
+    <p class="lead">Наложи всю эту кучу возможностей прямо себе в карман, скачав нашу прогу.</p>
+  </div>
+</section>
+{% endblock %}

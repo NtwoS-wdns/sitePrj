@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Карта питомцев{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<section class="d-flex" style="min-height: 100vh;">
+  <!-- Левая панель -->
+  <div class="bg-dark text-white p-4" style="width: 320px;">
+    <h4 class="mb-3">Добавить собаку</h4>
+    <form id="dogForm">
+      <div class="mb-3">
+        <label for="dogName" class="form-label">Имя</label>
+        <input type="text" id="dogName" class="form-control" placeholder="Кличка" required>
+      </div>
+      <div class="mb-3">
+        <label for="dogDesc" class="form-label">Описание</label>
+        <textarea id="dogDesc" class="form-control" rows="3" placeholder="Коротко о собаке"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="dogLat" class="form-label">Широта</label>
+        <input type="number" step="any" id="dogLat" class="form-control" placeholder="51.389" required>
+      </div>
+      <div class="mb-3">
+        <label for="dogLng" class="form-label">Долгота</label>
+        <input type="number" step="any" id="dogLng" class="form-control" placeholder="30.099" required>
+      </div>
+      <button type="submit" class="btn btn-warning w-100">Добавить на карту</button>
+    </form>
+  </div>
+
+  <!-- Карта -->
+  <div id="map" style="flex-grow: 1;"></div>
+</section>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  // Инициализация карты
+  const map = L.map('map').setView([51.389, 30.099], 12); // Чернобыль
+
+  // Подложка карты
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  // Иконка собаки
+  const dogIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/616/616408.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -28]
+  });
+
+  // 4 маркера Чернобыля
+  const initialMarkers = [
+    [51.389, 30.099, "Реактор №4", "Знаковое место катастрофы"],
+    [51.406, 30.056, "Припять", "Заброшенный город"],
+    [51.362, 30.104, "Реактор №3", "Соседний энергоблок"],
+    [51.415, 30.096, "Рыжий лес", "Самая загрязнённая зона"]
+  ];
+
+  initialMarkers.forEach(([lat, lng, title, desc]) => {
+    L.marker([lat, lng], { icon: dogIcon })
+      .addTo(map)
+      .bindPopup(`<b>${title}</b><br>${desc}`);
+  });
+
+  // Форма добавления новой собаки
+  const dogForm = document.getElementById("dogForm");
+  dogForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("dogName").value;
+    const desc = document.getElementById("dogDesc").value;
+    const lat = parseFloat(document.getElementById("dogLat").value);
+    const lng = parseFloat(document.getElementById("dogLng").value);
+
+    if (!isNaN(lat) && !isNaN(lng)) {
+      L.marker([lat, lng], { icon: dogIcon })
+        .addTo(map)
+        .bindPopup(`<b>${name}</b><br>${desc}`);
+      map.setView([lat, lng], 14);
+      dogForm.reset();
+    } else {
+      alert("Введите корректные координаты");
+    }
+  });
+</script>
+{% endblock %}

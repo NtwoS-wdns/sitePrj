@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}Pet Network{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* ===== Карточки питомцев (объёмные) ===== */
+    .pet-card {
+      width: 320px;
+      height: 480px;
+      background: linear-gradient(145deg, #1a1a1a, #111);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,.9), inset 0 0 20px rgba(255,215,0,.15);
+      transition: transform .4s ease, box-shadow .4s ease;
+    }
+    .pet-card:hover {
+      transform: scale(1.07) rotate3d(1,1,0,4deg);
+      box-shadow: 0 16px 40px rgba(0,0,0,1), inset 0 0 25px rgba(255,215,0,.25);
+    }
+    .pet-card img {
+      width: 100%;
+      height: 65%;
+      object-fit: cover;
+      border-bottom: 2px solid #222;
+    }
+    .pet-card-body {
+      background: #1e1e1e;
+      color: #fff;
+      padding: 14px;
+      height: 35%;
+    }
+    .pet-card-body h5 {
+      margin-bottom: .5rem;
+      font-weight: bold;
+      color: #ffd700;
+    }
+    .pet-card-body p {
+      font-size: .9rem;
+      color: #bbb;
+    }
+
+    /* ===== Анимации появления блоков ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body style="background:#000; color:#fff;">
+
+  {% block content %}{% endblock %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Анимации появления блоков при прокрутке
+    function revealOnScroll() {
+      const reveals = document.querySelectorAll(".reveal");
+      for (let r of reveals) {
+        const rect = r.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 80) {
+          r.classList.add("visible");
+        }
+      }
+    }
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+  </script>
+</body>
+</html>
