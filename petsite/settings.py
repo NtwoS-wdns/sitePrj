@@ -25,10 +25,9 @@ SECRET_KEY = 'django-insecure-!1m2r*k58d^agyz9-81d@p#u-%m*bo6%u$&!)q7n50%l@a^%5v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["siteprj-5.onrender.com",  # твой боевой домен
-    "127.0.0.1",               # локальный сервер
-    "localhost", ]
-
+ALLOWED_HOSTS = ['*']
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Application definition
 
