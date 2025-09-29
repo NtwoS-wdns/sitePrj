@@ -4,17 +4,35 @@
 {% block content %}
 
 <!-- Хеддер -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-  <div class="container">
+<nav class="navbar navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
     <a class="navbar-brand" href="#">🐾 PET'O'TET</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav">
-      <span class="navbar-toggler-icon"></span>
+
+    <!-- Кнопка меню -->
+    <button class="btn btn-outline-light" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#menuOffcanvas"
+            aria-controls="menuOffcanvas" aria-label="Открыть меню">
+      ☰ Меню
     </button>
-    <div id="topNav" class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="/login/">Вход</a></li>
-        <li class="nav-item"><a class="nav-link" href="/map/">Локатор</a></li>
-      </ul>
+
+    <!-- Offcanvas меню -->
+    <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="menuOffcanvas" aria-labelledby="menuOffcanvasLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="menuOffcanvasLabel">Навигация</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav custom-nav">
+
+          {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link text-white" href="/profile/">Профиль</a></li>
+          {% else %}
+          <li class="nav-item"><a class="nav-link text-white" href="/login/">Вход</a></li>
+          {% endif %}
+          <li class="nav-item"><a class="nav-link text-white" href="/fmap/">Нашел</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="/map/">Потерял</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>
@@ -44,10 +62,10 @@
       </div>
 
       <!-- Стрелки -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#petCardCarousel" data-bs-slide="prev">
+      <button class="carousel-control-prev" type="button" data-bs-target="#petCardCarousel" data-bs-slide="prev" aria-label="Назад">
         <span class="carousel-control-prev-icon"></span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#petCardCarousel" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#petCardCarousel" data-bs-slide="next" aria-label="Вперёд">
         <span class="carousel-control-next-icon"></span>
       </button>
     </div>
@@ -91,4 +109,40 @@
     <p class="lead">Наложи всю эту кучу возможностей прямо себе в карман, скачав нашу прогу.</p>
   </div>
 </section>
+
+<!-- Эффекты для пунктов меню в offcanvas -->
+<style>
+  .custom-nav .nav-link {
+    position: relative;
+    padding-left: 12px;               /* чтобы текст не прилипал к полоске */
+    transition: transform .2s ease, color .2s ease;
+  }
+  .custom-nav .nav-link::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background-color: #ffc107;        /* жёлтая полоска */
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .2s ease;
+  }
+  .custom-nav .nav-link:hover {
+    transform: translateX(-5px);      /* лёгкий сдвиг влево */
+    color: #ffc107;                   /* подсветка текста */
+  }
+  .custom-nav .nav-link:hover::before {
+    transform: scaleY(1);             /* показываем полоску */
+  }
+  /* Активный пункт (если нужно подсвечивать текущую страницу) */
+  .custom-nav .nav-link.active,
+  .custom-nav .nav-link.active:hover {
+    color: #ffc107;
+  }
+  .custom-nav .nav-link.active::before {
+    transform: scaleY(1);
+  }
+</style>
+
 {% endblock %}
+

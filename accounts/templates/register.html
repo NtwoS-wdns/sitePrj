@@ -1,46 +1,66 @@
 {% extends "base.html" %}
-{% block title %}Вход{% endblock %}
+{% block title %}Регистрация{% endblock %}
 
 {% block content %}
-<section class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background: linear-gradient(135deg, #141e30, #243b55);">
-  <div class="card shadow-lg" style="width: 100%; max-width: 400px; border-radius: 16px;">
+<section class="d-flex justify-content-center align-items-center"
+         style="min-height: 100vh; background: linear-gradient(135deg, #232526, #414345);">
+  <div class="card shadow-lg" style="width: 100%; max-width: 450px; border-radius: 16px;">
     <div class="card-body p-4">
-      <h3 class="text-center mb-4">Вход</h3>
+      <h3 class="text-center mb-4">Создать аккаунт</h3>
 
-      <!-- Форма входа -->
-      <form>
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- Ник -->
         <div class="mb-3">
-          <label for="username" class="form-label">Email или логин</label>
-          <input type="text" id="username" class="form-control" placeholder="Введите email или логин">
+          <label for="id_username" class="form-label">Ник</label>
+          <input type="text" name="username" class="form-control" id="id_username"
+                 placeholder="Введите ник" required>
         </div>
+
+        <!-- Email -->
         <div class="mb-3">
-          <label for="password" class="form-label">Пароль</label>
-          <input type="password" id="password" class="form-control" placeholder="Введите пароль">
+          <label for="id_email" class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" id="id_email"
+                 placeholder="Введите email" required>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Войти</button>
+
+        <!-- Пароль -->
+        <div class="mb-3">
+          <label for="id_password1" class="form-label">Пароль</label>
+          <input type="password" name="password1" class="form-control" id="id_password1"
+                 placeholder="Введите пароль" required>
+        </div>
+
+        <!-- Повтор пароля -->
+        <div class="mb-3">
+          <label for="id_password2" class="form-label">Повторите пароль</label>
+          <input type="password" name="password2" class="form-control" id="id_password2"
+                 placeholder="Повторите пароль" required>
+        </div>
+
+        <!-- Ошибки формы -->
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Кнопка -->
+        <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
       </form>
 
-      <!-- Разделитель -->
-      <div class="d-flex align-items-center my-3">
-        <hr class="flex-grow-1">
-        <span class="mx-2 text-muted">ИЛИ</span>
-        <hr class="flex-grow-1">
-      </div>
-
-      <!-- Кнопка-заглушка Google -->
-      <a href="#" class="btn btn-light w-100 d-flex align-items-center justify-content-center" style="border: 1px solid #ddd; border-radius: 8px;">
-        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" width="20" class="me-2">
-        Войти через Google
-      </a>
-
-      <!-- Ссылка на регистрацию -->
       <p class="text-center mt-3 mb-0">
-        Нет аккаунта?
-        <a href="#">Зарегистрироваться</a>
+        Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
       </p>
     </div>
   </div>
 </section>
 {% endblock %}
-
-

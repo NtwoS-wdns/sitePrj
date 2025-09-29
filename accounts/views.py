@@ -6,8 +6,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
-def login(request):
-    return render(request, "register.html")
+
+def fmap(request):
+    return render(request, "fmap.html")
 def map(request):
     return render(request, "map.html")
 def register(request):
@@ -16,10 +17,22 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("profile")
+
+            # если Google-логин был, линкуем его к пользователю
+            sociallogin = request.session.pop('sociallogin', None)
+            if sociallogin:
+                sociallogin.user = user
+                sociallogin.save(request)
+
+            return redirect("profile")  # ✅ всегда return
+        else:
+            # если форма невалидна → снова отрендерить с ошибками
+            return render(request, "register.html", {"form": form})
+
     else:
+        # GET-запрос → просто показываем форму
         form = UserCreationForm()
-    return render(request, "register.html", {"form": form})
+        return render(request, "register.html", {"form": form})
 
 
 def login_view(request):
@@ -31,7 +44,7 @@ def login_view(request):
             return redirect("profile")
     else:
         form = AuthenticationForm()
-    return render(request, "accounts/login.html", {"form": form})
+    return render(request, "login.html", {"form": form})
 
 def logout_view(request):
     logout(request)
@@ -39,7 +52,7 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    return render(request, "accounts/profile.html")
+    return render(request, "profile.html")
 
 def home(request):
     slides = [

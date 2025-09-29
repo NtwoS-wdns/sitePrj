@@ -40,8 +40,36 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django.contrib.sites',   # обязательно
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',  # Google провайдер
 ]
+SITE_ID = 1
 
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '9628252350-3bacaqchs3rh3uhcmtkcq24ui7t28kfh.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': ['profile', 'email'],
+    }
+}
+
+SOCIALACCOUNT_ADAPTER = 'accounts.adapters.MySocialAccountAdapter'
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_AUTO_SIGNUP = False
+
+LOGIN_REDIRECT_URL = '/register/'   # вместо /login/, чтобы не зацикливалось
+LOGOUT_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 
 MIDDLEWARE = [
@@ -50,10 +78,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',  # 👈 добавь сюда
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-
 ]
 
 ROOT_URLCONF = 'petsite.urls'
@@ -121,7 +149,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+#Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Redirects
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

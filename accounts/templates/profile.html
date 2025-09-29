@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<section class="d-flex justify-content-center align-items-center"
+         style="min-height: 100vh; background: linear-gradient(135deg, #232526, #414345);">
+  <div class="card shadow-lg text-center" style="width: 100%; max-width: 500px; border-radius: 16px;">
+    <div class="card-body p-4">
+      <h2 class="mb-3">👤 Профиль</h2>
+
+      <div class="mb-3">
+        <strong>Имя пользователя:</strong> {{ user.username }}
+      </div>
+
+      <div class="mb-3">
+        <strong>Email:</strong> {{ user.email }}
+      </div>
+
+      <div class="mb-3">
+        <strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}
+      </div>
+
+      <hr>
+
+      <a href="/" class="btn btn-secondary w-100 mb-2">🏠 На главную</a>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
