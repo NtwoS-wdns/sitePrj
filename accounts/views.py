@@ -16,24 +16,16 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-
-            # если Google-логин был, линкуем его к пользователю
-            sociallogin = request.session.pop('sociallogin', None)
-            if sociallogin:
-                sociallogin.user = user
-                sociallogin.save(request)
-
-            return redirect("profile")  # ✅ всегда return
-        else:
-            # если форма невалидна → снова отрендерить с ошибками
-            return render(request, "register.html", {"form": form})
-
+            # важно: берём данные формы
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password1")
+            # логиним через стандартный backend
+            user = authenticate(username=username, password=raw_password)
+            login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+            return redirect("profile")
     else:
-        # GET-запрос → просто показываем форму
         form = UserCreationForm()
-        return render(request, "register.html", {"form": form})
-
+    return render(request, "register.html", {"form": form})
 
 def login_view(request):
     if request.method == "POST":
